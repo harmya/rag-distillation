@@ -10,9 +10,9 @@ class SQUADataset:
     def __init__(self, split="train"):
         self.dataset = load_squad(split)
         self.max_length = 384
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased", padding="max_length", truncation=True)
         self.dataset = self.dataset.map(
-            lambda e: self.tokenizer(e["question"], e["context"], truncation="only_second", max_length=self.max_length),
+            lambda e: self.tokenizer(e["question"], e["context"], max_length=self.max_length, padding="max_length", truncation=True),
             batched=True,
         )
         self.dataset.set_format(type="torch", columns=['input_ids', 'token_type_ids', 'attention_mask'])

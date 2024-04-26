@@ -24,7 +24,7 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
     hard_loss = CrossEntropyLoss()
     soft_loss = KLDivLoss(reduction="batchmean")
 
-    for epoch in epochs:
+    for epoch in range(epochs):
         running_loss = 0.0
         for batch in tqdm(dataloader, desc=f"Epoch {epoch}"):
             input_ids = batch["input_ids"].to(device)
@@ -57,8 +57,8 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     num_gpus = torch.cuda.device_count()
 
-    student = student.to(device)
-    teacher = teacher.to(device)
+    student = student.model.to(device)
+    teacher = teacher.model.to(device)
 
     if num_gpus > 1:
         student = nn.DataParallel(student, device_ids=range(num_gpus))
