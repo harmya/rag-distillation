@@ -20,7 +20,7 @@ def load_model(model_path):
 
 def answer_question(question, context, model):
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-    inputs = tokenizer(question, context, return_tensors="pt")
+    inputs = tokenizer(question, context, return_tensors="pt", max_length=384, padding="max_length", truncation=True)
     input_ids = inputs["input_ids"].tolist()[0]
     outputs = model(**inputs)
     answer_start = torch.argmax(outputs.start_logits)
@@ -34,15 +34,14 @@ sd_val = SQUADataset(split="validation")
 eval_dict = {}
 print(len(sd_val))
 
-for i in range(len(sd_val)):
+for i in range(200, 210):
     question = sd_val[i]['question']
     context = sd_val[i]['context']
     answer = answer_question(question, context, model)
-    dict_id = sd_val[i]['id']
-    eval_dict[dict_id] = answer
-
-with open('eval_dict.json', 'w') as f:
-    json.dump(eval_dict, f)
+    print(f"Question: {question}")
+    print(f"Answer: {answer}")
+    print(f"Context: {context}")
+    print("--------------------------------------------------")
 
 print("Evaluation complete. Results saved to eval_dict.json")
 
