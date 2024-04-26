@@ -33,6 +33,6 @@ for i in range(5):
     question = sd_val[i]['question']
     context = sd_val[i]['context']
     answer = answer_question(question, context, model)
+    print(f"id: {sd_val[i]['id']}")
     print(f"Question: {question}")
     print(f"Answer: {answer}")
-    break
