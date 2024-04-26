@@ -72,8 +72,8 @@ if __name__ == "__main__":
     teacher = teacher.model.to(device)
 
     if num_gpus > 1:
-        student = nn.DataParallel(student, device_ids=[i for i in range(num_gpus - 1)])
-        teacher = nn.DataParallel(teacher, device_ids=[i for i in range(num_gpus - 1)])
+        student = nn.DataParallel(student, device_ids=[0])
+        teacher = nn.DataParallel(teacher, device_ids=[0])
     
     
     optimizer = Adam(student.parameters(), lr=5e-5)
