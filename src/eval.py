@@ -6,7 +6,7 @@ model_path = '../models/student_epoch_9.pt'
 
 def load_model(model_path):
     state_dict = torch.load(model_path)
-    print(state_dict.module)
+    print(state_dict._modules)
     student = Student()
     model = student.model
     model.load_state_dict(state_dict)
