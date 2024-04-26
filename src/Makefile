@@ -1,5 +1,5 @@
 # Define variables
-COMMIT_MESSAGE := "Makefile commit"
+COMMIT_MESSAGE := "Added new code, copied files to ssh server"
 # Define targets
 .PHONY: all clean
 
