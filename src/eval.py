@@ -38,11 +38,12 @@ for i in range(1200, 1210):
     question = sd_val[i]['question']
     context = sd_val[i]['context']
     answer = answer_question(question, context, model)
-    print(f"Question: {question}")
-    print(f"Answer: {answer}")
-    print(f"Context: {context}")
-    print("--------------------------------------------------")
+    dict_id = sd_val[i]['id']
+    eval_dict[dict_id] = answer
 
+
+with open('eval_dict.json', 'w') as f:
+    json.dump(eval_dict, f)
 
 print("Evaluation complete. Results saved to eval_dict.json")
 
