@@ -56,14 +56,14 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     num_gpus = torch.cuda.device_count()
+
+    student = student.to(device)
+    teacher = teacher.to(device)
+
     if num_gpus > 1:
         student = nn.DataParallel(student, device_ids=range(num_gpus))
         teacher = nn.DataParallel(teacher, device_ids=range(num_gpus))
     
-    student.to(device)
-    teacher.to(device)    
-    
     optimizer = Adam(student.parameters(), lr=5e-5)
-
     distillation_loop(teacher, student, dataloader, epochs=5, alpha=0.5, device=device)
 
