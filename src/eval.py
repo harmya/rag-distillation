@@ -29,10 +29,14 @@ def answer_question(question, context, model):
 model = load_model(model_path)
 sd_val = SQUADataset(split="validation")
 
-for i in range(5):
+eval_dict = {}
+print(len(sd_val))
+
+for i in range(len(sd_val)):
     question = sd_val[i]['question']
     context = sd_val[i]['context']
     answer = answer_question(question, context, model)
-    print(f"id: {sd_val[i]['id']}")
-    print(f"Question: {question}")
-    print(f"Answer: {answer}")
+    dict_id = sd_val[i]['id']
+    eval_dict[dict_id] = answer
+
+
