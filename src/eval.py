@@ -1,7 +1,6 @@
 from transformers import BertForQuestionAnswering, BertTokenizer
 import torch
 
-
 model_path = 'student_epoch_9.pt'
 
 def load_model(model_path):
