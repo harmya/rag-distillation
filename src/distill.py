@@ -30,9 +30,10 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             token_type_ids = batch["token_type_ids"].to(device)
+            print(input_ids.shape, attention_mask.shape, token_type_ids.shape)
             with torch.no_grad():
-                teacher_output = teacher(input_ids=torch.tensor([input_ids]), attention_mask=torch.tensor([attention_mask]), token_type_ids=torch.tensor([token_type_ids]))
-            student_output = student(input_ids=input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids)
+                teacher_output = teacher(input_ids, attention_mask, token_type_ids)
+            student_output = student(input_ids, attention_mask, token_type_ids)
             
             teacher_start_logits, teacher_end_logits = teacher_output.start_logits, teacher_output.end_logits
             student_start_logits, student_end_logits = student_output.start_logits, student_output.end_logits
