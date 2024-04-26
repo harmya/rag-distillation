@@ -60,7 +60,6 @@ if __name__ == "__main__":
     dataset = SQUADataset()
     dataloader = dataset.dataloader
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
     num_gpus = torch.cuda.device_count()
     print(f"Running on {device} with {num_gpus} GPUs.")
     student = student.model.to(device)
@@ -68,4 +67,6 @@ if __name__ == "__main__":
     
     optimizer = Adam(student.parameters(), lr=5e-5)
     distillation_loop(teacher, student, dataloader, epochs=5, alpha=0.5, device=device)
+
+    torch.save(student.state_dict(), "student_model.pth")
 
