@@ -30,6 +30,7 @@ model = load_model(model_path)
 answer = answer_question(question, context, model)
 sd_val = SQUADataset(split="validation")
 
+
 for i in range(5):
     question = sd_val[i]['question']
     context = sd_val[i]['context']
