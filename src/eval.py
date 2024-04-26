@@ -2,6 +2,8 @@ from transformers import BertForQuestionAnswering, BertTokenizer
 import torch
 from student import Student
 from dataloader import SQUADataset
+import json
+
 model_path = '../models/student_epoch_9.pt'
 
 def load_model(model_path):
@@ -38,5 +40,10 @@ for i in range(len(sd_val)):
     answer = answer_question(question, context, model)
     dict_id = sd_val[i]['id']
     eval_dict[dict_id] = answer
+
+with open('eval_dict.json', 'w') as f:
+    json.dump(eval_dict, f)
+
+print("Evaluation complete. Results saved to eval_dict.json")
 
 
