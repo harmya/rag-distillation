@@ -26,7 +26,7 @@ def answer_question(question, context, model):
     answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(input_ids[answer_start:answer_end]))
     return answer
 
-question = "An igneous rock is a rock that crystallizes from what?"
+question = "which nfl team represented the afc at super bowl 50?"
 context = "Also, known as volcanic rock, igneous rock is formed by the cooling of magma."
 
 model = load_model(model_path)

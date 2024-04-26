@@ -25,5 +25,5 @@ class SQUADataset:
         return self.dataset[idx]
 
 
-sd = SQUADataset()
+sd = SQUADataset(split="validation")
 print(sd.tokenizer.decode(sd[0]['input_ids']))
