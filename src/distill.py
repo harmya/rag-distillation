@@ -26,11 +26,11 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
 
     for epoch in range(epochs):
         running_loss = 0.0
+        step = 0
         for batch in tqdm(dataloader, desc=f"Epoch {epoch}"):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             token_type_ids = batch["token_type_ids"].to(device)
-            print(input_ids.shape, attention_mask.shape, token_type_ids.shape)
             with torch.no_grad():
                 teacher_output = teacher(input_ids, attention_mask, token_type_ids)
             student_output = student(input_ids, attention_mask, token_type_ids)
@@ -50,8 +50,11 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
+            step += 1
+            if step % 500 == 0:
+                print(f"Step Loss: {running_loss / step}")
         
-        print(f"Loss: {running_loss / len(dataloader)}")
+        print(f"\nEpoch Loss: {running_loss / len(dataloader)}\n")
     
 
 if __name__ == "__main__":
@@ -59,7 +62,6 @@ if __name__ == "__main__":
     student = Student()
     dataset = SQUADataset()
     dataloader = dataset.dataloader
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     num_gpus = torch.cuda.device_count()
     print(f"Running on {device} with {num_gpus} GPUs.")
@@ -67,9 +69,12 @@ if __name__ == "__main__":
     teacher = teacher.model.to(device)
 
     if num_gpus > 1:
-        student = nn.DataParallel(student, device_ids=range(num_gpus))
-        teacher = nn.DataParallel(teacher, device_ids=range(num_gpus))
+        student = nn.DataParallel(student)
+        teacher = nn.DataParallel(teacher)
+    
     
     optimizer = Adam(student.parameters(), lr=5e-5)
     distillation_loop(teacher, student, dataloader, epochs=5, alpha=0.5, device=device)
+
+    torch.save(student.state_dict(), "student_model.pth")
 

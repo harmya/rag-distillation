@@ -1,10 +1,8 @@
-from transformers import BertForQuestionAnswering, BertTokenizer
+from transformers import BertForQuestionAnswering, BertTokenizer, BertConfig
 
 class Teacher:
-    def __init__(self):
-        self.model = BertForQuestionAnswering.from_pretrained('deepset/bert-base-cased-squad2')
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        print("Teacher model initialized.")
+    def __init__(self, vocab_size=30522):
+        self.model = BertForQuestionAnswering.from_pretrained('google-bert/bert-large-uncased-whole-word-masking-finetuned-squad')
         print(f"Total parameters: {self.model.num_parameters()}")
 
     def model():
