@@ -4,7 +4,7 @@ from student import Student
 from dataloader import SQUADataset
 import json
 
-model_path = '../models/student_epoch_9.pt'
+model_path = '../models/student_epoch_10.pt'
 
 def load_model(model_path):
     state_dict = torch.load(model_path)
