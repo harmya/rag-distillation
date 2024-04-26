@@ -1,6 +1,5 @@
 # Define variables
 COMMIT_MESSAGE := "Automatic commit"
-
 # Define targets
 .PHONY: all clean
 
