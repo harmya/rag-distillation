@@ -58,9 +58,9 @@ if __name__ == "__main__":
     teacher = Teacher()
     student = Student()
     dataset = SQUADataset()
-
+    dataloader = dataset.dataloader
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    dataloader = dataset.dataloader.to(device)
+
     num_gpus = torch.cuda.device_count()
     print(f"Running on {device} with {num_gpus} GPUs.")
     student = student.model.to(device)
