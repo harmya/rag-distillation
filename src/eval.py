@@ -14,6 +14,7 @@ def load_model(model_path):
     model.eval()
     return model
 
+
 def answer_question(question, context, model):
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
     inputs = tokenizer(question, context, return_tensors="pt")
