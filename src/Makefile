@@ -7,7 +7,7 @@ all: commit
 
 commit:
 	@echo "Adding changes..."
-	git add *
+	git add *.py
 	@echo "Committing changes..."
 	git commit -m $(COMMIT_MESSAGE)
 	@echo "Pushing changes..."
