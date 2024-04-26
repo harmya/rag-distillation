@@ -33,12 +33,17 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
             with torch.no_grad():
                 teacher_output = teacher(input_ids, attention_mask, token_type_ids)
             student_output = student(input_ids, attention_mask, token_type_ids)
-            student_logits = student_output.logits
-            teacher_logits = teacher_output.logits
+            
+            teacher_start_logits, teacher_end_logits = teacher_output.start_logits, teacher_output.end_logits
+            student_start_logits, student_end_logits = student_output.start_logits, student_output.end_logits
 
-            loss_hard = hard_loss(student_logits, teacher_logits)
-            loss_soft = soft_loss(softmax(student_logits, dim=1), softmax(teacher_logits, dim=1))
-            loss = alpha * loss_hard + (1 - alpha) * loss_soft
+            hard_loss_start = hard_loss(student_start_logits, teacher_start_logits.argmax(dim=1))
+            hard_loss_end = hard_loss(student_end_logits, teacher_end_logits.argmax(dim=1))
+
+            soft_loss_start = soft_loss(softmax(student_start_logits, dim=1), softmax(teacher_start_logits, dim=1))
+            soft_loss_end = soft_loss(softmax(student_end_logits, dim=1), softmax(teacher_end_logits, dim=1))
+
+            loss = ((1 - alpha) * (hard_loss_start + hard_loss_end) + alpha * (soft_loss_start + soft_loss_end)) / 2
 
             optimizer.zero_grad()
             loss.backward()
