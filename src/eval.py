@@ -6,6 +6,8 @@ model_path = '../models/student_epoch_9.pt'
 
 def load_model(model_path):
     state_dict = torch.load(model_path)
+    for k in list(state_dict.keys()):
+        print(k)
     student = Student()
     model = student.model
     model.load_state_dict(state_dict)   
