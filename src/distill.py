@@ -26,6 +26,7 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
 
     for epoch in range(epochs):
         running_loss = 0.0
+        step = 0
         for batch in tqdm(dataloader, desc=f"Epoch {epoch}"):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
@@ -50,8 +51,11 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
+            step += 1
+            if step % 500 == 0:
+                print(f"Step Loss: {running_loss / step}")
         
-        print(f"Loss: {running_loss / len(dataloader)}")
+        print(f"\nEpoch Loss: {running_loss / len(dataloader)}\n")
     
 
 if __name__ == "__main__":
@@ -64,6 +68,11 @@ if __name__ == "__main__":
     print(f"Running on {device} with {num_gpus} GPUs.")
     student = student.model.to(device)
     teacher = teacher.model.to(device)
+
+    if num_gpus > 1:
+        student = nn.DataParallel(student)
+        teacher = nn.DataParallel(teacher)
+    
     
     optimizer = Adam(student.parameters(), lr=5e-5)
     distillation_loop(teacher, student, dataloader, epochs=5, alpha=0.5, device=device)
