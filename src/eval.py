@@ -5,6 +5,7 @@ model_path = '../models/student_epoch_9.pt'
 
 def load_model(model_path):
     state_dict = torch.load(model_path)
+    print(state_dict.keys())
     model = BertForQuestionAnswering.from_pretrained("bert-base-uncased")
     model.load_state_dict(state_dict)   
     model.eval()
