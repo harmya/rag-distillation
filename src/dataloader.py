@@ -16,7 +16,7 @@ class SQUADataset:
             batched=True,
         )
         self.dataset.set_format(type="torch", columns=['input_ids', 'token_type_ids', 'attention_mask'])
-        self.dataloader = DataLoader(self.dataset, batch_size=32, shuffle=True)
+        self.dataloader = DataLoader(self.dataset, batch_size=8, shuffle=True)
 
     def __len__(self):
         return len(self.dataset)
