@@ -7,6 +7,7 @@ from tqdm import tqdm
 from dataloader import SQUADataset
 from student import Student
 from teacher import Teacher
+import os
 
 def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alpha=0.5, device=None):
     
@@ -55,6 +56,8 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
                 print(f"Step Loss: {running_loss / step}")
         
         print(f"\nEpoch Loss: {running_loss / len(dataloader)}\n")
+        os.makedirs("models", exist_ok=True)
+        torch.save(student.state_dict(), f"models/student_epoch_{epoch}.pt")
     
 
 if __name__ == "__main__":
@@ -72,9 +75,5 @@ if __name__ == "__main__":
         student = nn.DataParallel(student)
         teacher = nn.DataParallel(teacher)
     
-    
     optimizer = Adam(student.parameters(), lr=5e-5)
-    distillation_loop(teacher, student, dataloader, epochs=5, alpha=0.5, device=device)
-
-    torch.save(student.state_dict(), "student_model.pth")
-
+    distillation_loop(teacher, student, dataloader, epochs=100, alpha=0.4, device=device)
