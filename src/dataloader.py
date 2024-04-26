@@ -15,7 +15,7 @@ class SQUADataset:
             lambda e: self.tokenizer(e["question"], e["context"], max_length=self.max_length, padding="max_length", truncation=True),
             batched=True,
         )
-        self.dataset.set_format(type="torch", columns=['input_ids', 'token_type_ids', 'attention_mask'])
+        self.dataset.set_format(type="torch", columns=['id', 'question', 'context', 'input_ids', 'attention_mask', 'token_type_ids'])
         self.dataloader = DataLoader(self.dataset, batch_size=64, shuffle=True)
 
     def __len__(self):
@@ -23,7 +23,3 @@ class SQUADataset:
     
     def __getitem__(self, idx):
         return self.dataset[idx]
-
-
-sd = SQUADataset(split="validation")
-print(sd.tokenizer.decode(sd[0]['input_ids']))
