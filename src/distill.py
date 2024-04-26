@@ -66,8 +66,8 @@ if __name__ == "__main__":
     student = student.model.to(device)
     teacher = teacher.model.to(device)
     if num_gpus > 1:
-        student = nn.parallel.DistributedDataParallel(student, device_ids=1)
-        teacher = nn.parallel.DistributedDataParallel(teacher, device_ids=2)
+        student = nn.parallel.DistributedDataParallel(student, device_ids=range(num_gpus))
+        teacher = nn.parallel.DistributedDataParallel(teacher, device_ids=range(num_gpus))
     
     optimizer = Adam(student.parameters(), lr=5e-5)
     distillation_loop(teacher, student, dataloader, epochs=5, alpha=0.5, device=device)
