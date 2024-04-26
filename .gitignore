@@ -1,2 +1,5 @@
 src/__pycache__
 src/student_epoch*
+.env
+src/train.jsonl
+data

@@ -1,11 +1,21 @@
 from datasets import load_dataset
 from torch.utils.data import DataLoader
-from transformers import AutoTokenizer
 
 def load_squad(split="train"):
-    dataset = load_dataset("squad", split=split)
+    dataset = load_dataset("rajpurkar/squad_v2", split=split)
     return dataset
     
+def get_contexts():
+    dataset = load_squad()
+    tokens = 0
+    contexts = []
+    for i in range(len(dataset)):
+        contexts.append(dataset[i]['context'])
+        tokens += len(dataset[i]['context'].split())
+    print(tokens)
+    print(len(contexts))
+    return contexts
+
 class SQUADataset:
     def __init__(self, split="train"):
         self.dataset = load_squad(split)
@@ -15,7 +25,7 @@ class SQUADataset:
             lambda e: self.tokenizer(e["question"], e["context"], max_length=self.max_length, padding="max_length", truncation=True),
             batched=True,
         )
-        self.dataset.set_format(type="torch", columns=['input_ids', 'token_type_ids', 'attention_mask'])
+        self.dataset.set_format(type="torch", columns=['id', 'question', 'context', 'input_ids', 'attention_mask', 'token_type_ids'])
         self.dataloader = DataLoader(self.dataset, batch_size=64, shuffle=True)
 
     def __len__(self):
@@ -25,5 +35,4 @@ class SQUADataset:
         return self.dataset[idx]
 
 
-sd = SQUADataset()
-print(sd.tokenizer.decode(sd[0]['input_ids']))
+get_questions()
