@@ -31,8 +31,8 @@ def distillation_loop(teacher=None, student=None, dataloader=None, epochs=5, alp
             attention_mask = batch["attention_mask"].to(device)
             token_type_ids = batch["token_type_ids"].to(device)
             with torch.no_grad():
-                teacher_output = teacher.model(input_ids, attention_mask, token_type_ids)
-            student_output = student.model(input_ids, attention_mask, token_type_ids)
+                teacher_output = teacher(input_ids, attention_mask, token_type_ids)
+            student_output = student(input_ids, attention_mask, token_type_ids)
             student_logits = student_output.logits
             teacher_logits = teacher_output.logits
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     num_gpus = torch.cuda.device_count()
-
+    print(f"Running on {device} with {num_gpus} GPUs.")
     student = student.model.to(device)
     teacher = teacher.model.to(device)
 
