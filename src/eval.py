@@ -27,7 +27,7 @@ def answer_question(question, context, model):
     return answer
 
 question = "An igneous rock is a rock that crystallizes from what?"
-context = ""
+context = "Also, known as volcanic rock, igneous rock is formed by the cooling of magma."
 
 model = load_model(model_path)
 answer = answer_question(question, context, model)
