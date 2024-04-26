@@ -4,7 +4,9 @@ import torch
 model_path = 'student_epoch_9.pt'
 
 def load_model(model_path):
-    model = BertForQuestionAnswering.from_pretrained(model_path)
+    state_dict = torch.load(model_path)
+    model = BertForQuestionAnswering.from_pretrained("bert-base-uncased")
+    model.load_state_dict(state_dict)   
     model.eval()
     return model
 
