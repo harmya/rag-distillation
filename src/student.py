@@ -16,4 +16,3 @@ class Student:
 
     def model():
         return self.model
-    
