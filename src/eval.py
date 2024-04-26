@@ -27,7 +27,6 @@ def answer_question(question, context, model):
     return answer
 
 model = load_model(model_path)
-answer = answer_question(question, context, model)
 sd_val = SQUADataset(split="validation")
 
 for i in range(5):
