@@ -8,5 +8,5 @@ class Student:
         self.model = BertModel(self.config)
 
 
-    def predict(self, text):
-        return self.model(text)
+    def model():
+        return self.model
