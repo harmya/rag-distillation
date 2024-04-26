@@ -31,3 +31,4 @@ context = "The capital of France is Paris."
 
 model = load_model(model_path)
 answer = answer_question(question, context, model)
+print(answer)
