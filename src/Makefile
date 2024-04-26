@@ -1,5 +1,5 @@
 # Define variables
-COMMIT_MESSAGE := "Automatic commit"
+COMMIT_MESSAGE := "Makefile commit"
 # Define targets
 .PHONY: all clean
 
