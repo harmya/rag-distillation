@@ -10,6 +10,9 @@ def load_model(model_path):
         if k.startswith('model.'):
             state_dict[k[len('model.'):]] = state_dict[k]
             del state_dict[k]
+    
+    for k in list(state_dict.keys()):
+        print(k)
     student = Student()
     model = student.model
     model.load_state_dict(state_dict)   
