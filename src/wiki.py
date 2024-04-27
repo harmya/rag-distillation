@@ -16,8 +16,6 @@ doc_embeddings = []
 for doc in docs_stream:
     docs.append(doc)
     doc_embeddings.append(doc['emb'])
-    if len(docs) >= max_docs:
-        break
 
 doc_embeddings = torch.tensor(doc_embeddings)
 
