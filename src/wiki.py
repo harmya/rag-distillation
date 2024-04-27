@@ -6,11 +6,9 @@ import dotenv
 
 dotenv.load_dotenv()
 
-
 co = cohere.Client(f"{os.getenv('COHERE_API_KEY')}")
 
-max_docs = 1000
-docs_stream = load_dataset(f"Cohere/wikipedia-22-12-en-embeddings", split="train", streaming=True)
+docs_stream = load_dataset(f"Cohere/wikipedia-22-12-simple-embeddings", split="train", streaming=True)
 
 docs = []
 doc_embeddings = []
