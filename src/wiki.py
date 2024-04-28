@@ -2,12 +2,11 @@ import torch
 import cohere
 import os
 import dotenv
-import dataloader
+import questions
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 
 dotenv.load_dotenv()
-
 
 co = cohere.Client(f"{os.getenv('COHERE_PROD')}")
 
@@ -19,15 +18,16 @@ loaded = 0
 for doc in dataset:
     docs.append(doc)
     loaded += 1
-    print(f"Loaded {loaded} documents", end="\r")
-
+    if loaded % 1000 == 0:
+        print(f"Loaded {loaded} documents")
 
 doc_embeddings = torch.load(doc_embeddings).to('cuda')
 
 rag_outputs = {}
-queries = dataloader.get_questions()
+queries = questions.get_questions()
 
-for query_id, query in queries.items():
+loaded = 0
+for query, idx in queries.items():
     response = co.embed(texts=[query], model='multilingual-22-12')
     query_embedding = torch.tensor(response.embeddings).to('cuda')
 
@@ -37,10 +37,12 @@ for query_id, query in queries.items():
     most_similar_doc = docs[most_similar_idx]
     most_similar_text = most_similar_doc['text']
 
-    rag_outputs[query_id] = most_similar_text
+    rag_outputs[idx] = most_similar_text
+    loaded += 1
+    if loaded % 1000 == 0:
+        print(f"Processed {loaded} queries")
 
 with open('rag_outputs.json', 'w') as f:
     json.dump(rag_outputs, f)
 
 print("RAG outputs saved to rag_outputs.json")
-'''
