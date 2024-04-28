@@ -22,7 +22,11 @@ for doc in dataset:
     loaded += 1
     print(f"Loaded {loaded} documents", end="\r")
 
-doc_embeddings = torch.cat(doc_embeddings, dim=0).to('cuda')
+doc_embeddings = torch.tensor(doc_embeddings).to('cuda')
+# save the embeddings to a file
+torch.save(doc_embeddings, 'doc_embeddings.pt')
+'''
+
 
 rag_outputs = {}
 queries = dataloader.get_questions()
@@ -43,3 +47,4 @@ with open('rag_outputs.json', 'w') as f:
     json.dump(rag_outputs, f)
 
 print("RAG outputs saved to rag_outputs.json")
+'''
