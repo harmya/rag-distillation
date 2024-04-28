@@ -6,6 +6,20 @@ def load_squad(split="train"):
     dataset = load_dataset("rajpurkar/squad_v2", split=split)
     return dataset
     
+def get_contexts():
+    dataset = load_squad()
+    contexts = []
+    for i in range(len(dataset)):
+        contexts.append(dataset[i]['context'])
+    return contexts
+
+def get_questions():
+    dataset = load_squad()
+    questions = {}
+    for i in range(len(dataset)):
+        questions[dataset[i]['id']] = dataset[i]['question']
+    return questions
+
 class SQUADataset:
     def __init__(self, split="train"):
         self.dataset = load_squad(split)
@@ -23,3 +37,5 @@ class SQUADataset:
     
     def __getitem__(self, idx):
         return self.dataset[idx]
+
+
