@@ -11,23 +11,7 @@ dotenv.load_dotenv()
 
 co = cohere.Client(f"{os.getenv('COHERE_PROD')}")
 
-dataset = load_dataset("Cohere/wikipedia-22-12-simple-embeddings", split="train", streaming=True)
-
-docs = []
-doc_embeddings = []
-loaded = 0
-for doc in dataset:
-    docs.append(doc)
-    doc_embeddings.append(doc['emb'])
-    loaded += 1
-    print(f"Loaded {loaded} documents", end="\r")
-
-doc_embeddings = torch.tensor(doc_embeddings).to('cuda')
-# save the embeddings to a file
-torch.save(doc_embeddings, 'doc_embeddings.pt')
-
-'''
-
+doc_embeddings = torch.load('doc_embeddings.pt')
 
 rag_outputs = {}
 queries = dataloader.get_questions()
