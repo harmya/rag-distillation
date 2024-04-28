@@ -34,7 +34,7 @@ sd_val = SQUADataset(split="validation")
 eval_dict = {}
 print(len(sd_val))
 
-for i in range(1200, 1210):
+for i in range(len(sd_val)):
     question = sd_val[i]['question']
     context = sd_val[i]['context']
     answer = answer_question(question, context, model)
