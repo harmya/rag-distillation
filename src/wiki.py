@@ -25,6 +25,7 @@ for doc in dataset:
 doc_embeddings = torch.tensor(doc_embeddings).to('cuda')
 # save the embeddings to a file
 torch.save(doc_embeddings, 'doc_embeddings.pt')
+
 '''
 
 
