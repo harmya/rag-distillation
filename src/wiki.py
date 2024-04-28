@@ -11,7 +11,18 @@ dotenv.load_dotenv()
 
 co = cohere.Client(f"{os.getenv('COHERE_PROD')}")
 
-doc_embeddings = torch.load('doc_embeddings.pt')
+dataset = load_dataset("Cohere/wikipedia-22-12-simple-embeddings", split="train", streaming=True)
+
+docs = []
+loaded = 0
+
+for doc in dataset:
+    docs.append(doc)
+    loaded += 1
+    print(f"Loaded {loaded} documents", end="\r")
+
+
+doc_embeddings = torch.load(doc_embeddings).to('cuda')
 
 rag_outputs = {}
 queries = dataloader.get_questions()
@@ -32,3 +43,4 @@ with open('rag_outputs.json', 'w') as f:
     json.dump(rag_outputs, f)
 
 print("RAG outputs saved to rag_outputs.json")
+'''
