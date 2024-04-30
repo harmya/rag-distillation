@@ -19,7 +19,7 @@ for doc in dataset:
     docs.append(doc)
     loaded += 1
     if loaded % 1000 == 0:
-        print(f"Loaded {loaded} documents")
+        print(f"Loaded {loaded} documents", end='\r')
 
 doc_embeddings = torch.load(doc_embeddings).to('cuda')
 
@@ -40,7 +40,7 @@ for query, idx in queries.items():
     rag_outputs[idx] = most_similar_text
     loaded += 1
     if loaded % 1000 == 0:
-        print(f"Processed {loaded} queries")
+        print(f"Processed {loaded} queries", end='\r')
 
 with open('rag_outputs.json', 'w') as f:
     json.dump(rag_outputs, f)
