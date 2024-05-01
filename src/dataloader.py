@@ -1,5 +1,6 @@
 from datasets import load_dataset
 from torch.utils.data import DataLoader
+from transformers import AutoTokenizer
 
 def load_squad(split="train"):
     dataset = load_dataset("rajpurkar/squad_v2", split=split)
@@ -34,5 +35,4 @@ class SQUADataset:
     def __getitem__(self, idx):
         return self.dataset[idx]
 
-
-get_questions()
+get_contexts()
