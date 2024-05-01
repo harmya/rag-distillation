@@ -32,12 +32,13 @@ class DistillDataGPT(Dataset):
         return encoding['input_ids']
 
 
+# 
 tokenizer = AutoTokenizer.from_pretrained("openai-community/gpt2")
 tokenizer.padding_side = "left"
 tokenizer.pad_token = tokenizer.eos_token
 
 data_list = []
-with open('../../data/cohere_teacher.jsonl', 'r') as file:
+with open('../../data/squad_teacher.jsonl', 'r') as file:
     for line in file:
         data_instance = json.loads(line)
         data_list.append(data_instance)
@@ -48,7 +49,7 @@ data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 model = GPT2LMHeadModel.from_pretrained("openai-community/gpt2")
 
 training_args = TrainingArguments(
-    output_dir="/scratch/gilbreth/mangla/exps-rag",
+    output_dir="/scratch/gilbreth/mangla/exps-squad-gpt",
     overwrite_output_dir=False,
     per_device_train_batch_size=64,
     num_train_epochs=50,

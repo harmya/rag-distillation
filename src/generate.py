@@ -3,20 +3,12 @@ from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
 
-model_name = "deepset/roberta-large-squad2"
+# model_name = "timpal0l/mdeberta-v3-base-squad2"
+model_name = "google-bert/bert-large-uncased-whole-word-masking-finetuned-squad"
 
 data_file = "../../data/train.jsonl"
 teacher = pipeline('question-answering', model=model_name, tokenizer=model_name, device=0)
 
-class SquadDataset(Dataset):
-    def __init__(self, data):
-        self.data = data
-
-    def __len__(self):
-        return len(self.data)
-  
-    def __getitem__(self, idx):
-        return self.data[idx]
 
 with open(data_file, 'r') as file:
     data_lines = file.readlines()
