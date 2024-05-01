@@ -17,9 +17,25 @@ for i in range(len(train_data)):
   except:
     continue
     data_instance["context"] = ""
-    
+
   out_data.append(data_instance)
 
 with open('../../data/processed_output.jsonl', 'w') as output_file:
   for item in out_data:
     output_file.write(json.dumps(item) + '\n')
+
+
+'''
+
+import json
+
+train_file = open('../../data/cohere_teacher_train.txt', 'a')
+
+with open('../../data/cohere_teacher.jsonl', 'r') as file:
+    for line in file:
+        data = json.loads(line)
+        complete_str = f'Question: {data["question"]}\nAnswer: {data["answer"]}\n\n'
+        train_file.write(complete_str)
+
+
+'''

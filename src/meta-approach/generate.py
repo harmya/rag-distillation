@@ -5,7 +5,7 @@ from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
 
 model_name = "deepset/roberta-large-squad2"
 
-data_file = "../../data/cohere_train.jsonl"
+data_file = "../../data/train.jsonl"
 teacher = pipeline('question-answering', model=model_name, tokenizer=model_name, device=0)
 
 class SquadDataset(Dataset):
@@ -30,7 +30,7 @@ for line in data_lines:
 
 dataset = SquadDataset(qa_data)
 
-dataloader = DataLoader(dataset, batch_size=256, shuffle=False)
+dataloader = DataLoader(dataset, batch_size=64, shuffle=False)
 
 curr = 0
 for i, batch in tqdm(enumerate(dataloader), total=len(dataloader)):
@@ -40,6 +40,6 @@ for i, batch in tqdm(enumerate(dataloader), total=len(dataloader)):
         final_data.append(final_instance)
         curr += 1
 
-with open('../../data/cohere_teacher.jsonl', 'w') as output_file:
+with open('../../data/squad_teacher.jsonl', 'w') as output_file:
     for item in final_data:
         output_file.write(json.dumps(item) + '\n')
